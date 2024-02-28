@@ -1,20 +1,18 @@
 from random import randint
 
-
+# Классы пользовательских исключений для более эффективной обработки ошибок
 class BoardException(Exception):
     pass
-
 
 class BoardOutException(BoardException):
     def __str__(self):
         return "Вы выстрелили за пределы игрового поля!"
 
-
 class BoardUsedException(BoardException):
     def __str__(self):
         return "Вы уже стреляли в эту клетку!"
 
-
+# Класс Dot представляет точку на игровом поле
 class Dot:
     def __init__(self, row, col):
         self.row = row
@@ -23,7 +21,7 @@ class Dot:
     def __eq__(self, other):
         return self.row == other.row and self.col == other.col
 
-
+# Класс Ship представляет корабль на игровом поле
 class Ship:
     def __init__(self, bow, length, direction):
         self.bow = bow
@@ -43,7 +41,7 @@ class Ship:
             ship_dots.append(Dot(row, col))
         return ship_dots
 
-
+# Класс Board представляет игровое поле
 class Board:
     def __init__(self, size):
         self.size = size
@@ -109,7 +107,7 @@ class Board:
         print("Мимо!")
         return False
 
-
+# Класс Player с методом для запроса ввода пользователя
 class Player:
     def __init__(self, board, enemy_board):
         self.board = board
@@ -127,15 +125,15 @@ class Player:
             except BoardException as e:
                 print(e)
 
-
+# Класс AI, который случайным образом выбирает цель для выстрела
 class AI(Player):
     def ask(self):
         row = randint(0, self.enemy_board.size - 1)
         col = randint(0, self.enemy_board.size - 1)
-        print(f"Компьютор стреляет в строку {row+1}, столбец {col+1}")
+        print(f"Компьютер стреляет в строку {row+1}, столбец {col+1}")
         return Dot(row, col)
 
-
+# Класс User, который принимает ввод от пользователя
 class User(Player):
     def ask(self):
         while True:
@@ -151,9 +149,7 @@ class User(Player):
             except BoardException as e:
                 print(e)
 
-
-
-
+# Класс Game, который оркестрирует ход игры
 class Game:
     def __init__(self):
         self.size = 6
@@ -207,7 +203,6 @@ class Game:
         self.random_board(self.ai_board, {3: 1, 2: 2, 1: 4})
         self.random_board(self.user_board, {3: 1, 2: 2, 1: 4})
         self.loop()
-
 
 if __name__ == "__main__":
     game = Game()
